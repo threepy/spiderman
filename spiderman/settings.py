@@ -19,7 +19,7 @@ NEWSPIDER_MODULE = 'spiderman.spiders'
 #USER_AGENT = 'spiderman (+http://www.yourdomain.com)'
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-#CONCURRENT_REQUESTS=32
+CONCURRENT_REQUESTS=100
 
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
@@ -62,9 +62,16 @@ NEWSPIDER_MODULE = 'spiderman.spiders'
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'spiderman.pipelines.SpidermanPipeline': 300,
+   'spiderman.pipelines.SpidermanPipeline': 1,
+   'spiderman.pipelines.XinSpiderPipeline': 2,
+   'scrapy.pipelines.images.ImagesPipeline': 3,
 }
 
+IMAGES_STORE = 'd:\images'
+IMAGES_THUMBS = {
+   'small': (3.6, 2.4),
+   'big': (36, 24),
+}
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
 # NOTE: AutoThrottle will honour the standard settings for concurrency and delay

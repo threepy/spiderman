@@ -3,6 +3,7 @@
 
 import scrapy
 from spiderman.items import SpidermanItem
+
 class DmozSpider(scrapy.Spider):
     name = "dmoz"
     allowed_domains = ["dmoz.org"]

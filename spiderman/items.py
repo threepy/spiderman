@@ -12,3 +12,15 @@ class SpidermanItem(scrapy.Item):
     title = scrapy.Field()
     link = scrapy.Field()
     desc = scrapy.Field()
+
+class XinItem(scrapy.Item):
+    title = scrapy.Field()
+    price = scrapy.Field()
+    url = scrapy.Field()
+    image_urls = scrapy.Field()
+    images = scrapy.Field()
+    registerTime = scrapy.Field()
+    tableDisplayMileage = scrapy.Field()
+    gearbox = scrapy.Field()
+    saleCity = scrapy.Field()
+
