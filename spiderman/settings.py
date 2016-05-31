@@ -65,6 +65,7 @@ ITEM_PIPELINES = {
    'spiderman.pipelines.SpidermanPipeline': 1,
    'spiderman.pipelines.XinSpiderPipeline': 2,
    'scrapy.pipelines.images.ImagesPipeline': 3,
+   'spiderman.pipelines.DoubanMoviePipeline': 4,
 }
 
 IMAGES_STORE = 'd:\images'
@@ -90,3 +91,12 @@ IMAGES_THUMBS = {
 #HTTPCACHE_DIR='httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES=[]
 #HTTPCACHE_STORAGE='scrapy.extensions.httpcache.FilesystemCacheStorage'
+DB_SERVER = 'MySQLdb'
+DB_CONNECT = {
+   'db': 'spider',
+   'user': 'root',
+   'passwd': 'toor',
+   'host': '127.0.0.1',
+   'charset': 'utf8',
+   'use_unicode': True
+}

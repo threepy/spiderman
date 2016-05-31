@@ -5,18 +5,25 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
-import MySQLdb
+from twisted.enterprise import adbapi
+from scrapy.utils.project import get_project_settings
+
+settings = get_project_settings()
 
 class SpidermanPipeline(object):
     def __init__(self):
-        self.conn = MySQLdb.connect(host='127.0.0.1', user='root', passwd='toor',
-        db='spider', charset='utf8')
-        self.cursor = self.conn.cursor()
+        dbargs = settings.get('DB_CONNECT')
+        db_server = settings.get('DB_SERVER')
+        dbpool = adbapi.ConnectionPool(db_server, **dbargs)
+        self.dbpool = dbpool
+
+    def __del__(self):
+        self.dbpool.close()
 
     def open_spider(self, spider):
         if spider.name == 'dmoz':
-            self.cursor.execute('delete from books')
-            self.conn.commit()
+            delSQL = 'delete from books'
+            self.dbpool.runOperation(delSQL)
 
     def process_item(self, item, spider):
         if spider.name == 'dmoz':
@@ -25,30 +32,37 @@ class SpidermanPipeline(object):
                     if item['desc']:
                         sql = 'insert into books VALUES (%s, %s, %s)'
                         param = (item['title'][0], item['link'][0], item['desc'][1])
-                        self.cursor.execute(sql, param)
-                        self.conn.commit()
+                        self.dbpool.runOperation(sql, param)
                 return item
         else:
             return item
 
-    def close_spider(self, spider):
-        self.conn.close()
-
-
 class XinSpiderPipeline(SpidermanPipeline):
     def open_spider(self, spider):
         if spider.name == 'xin':
-            self.cursor.execute('delete from forSaleTable')
-            self.conn.commit()
+            self.dbpool.runOperation('delete from forsaletable')
 
     def process_item(self, item, spider):
         if spider.name == 'xin':
             sql = 'insert into forSaleTable(title, price, url, ImgUrl, registerTime, tableDisplayMileage, gearbox, saleCity) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)'
             param = (item['title'][0], item['price'][0], item['url'][0], item['image_urls'][0],
                      item['registerTime'][0], item['tableDisplayMileage'][0], item['gearbox'][0], item['saleCity'][0])
-            self.cursor.execute(sql, param)
-            self.conn.commit()
+            self.dbpool.runOperation(sql, param)
             return item
         else:
             return item
 
+class DoubanMoviePipeline(SpidermanPipeline):
+    def open_spider(self, spider):
+        if spider.name == 'doubanmovie':
+            self.dbpool.runOperation('delete from doubanmovie')
+            
+    def process_item(self, item, spider):
+        if spider.name == 'doubanmovie':
+            sql = 'insert into doubanmovie VALUES (%s, %s, %s, %s, %s, %s)'
+            param = (item['name'][0], item['year'][0], item['score'][0], item['director'][0],item['classification'][0], item['actor'][0])
+            self.dbpool.runOperation(sql, param)
+            return item
+        else:
+             return item
+             

@@ -23,4 +23,12 @@ class XinItem(scrapy.Item):
     tableDisplayMileage = scrapy.Field()
     gearbox = scrapy.Field()
     saleCity = scrapy.Field()
-
+    
+    
+class DoubanMovieItem(scrapy.Item):
+    name = scrapy.Field()
+    year = scrapy.Field()
+    score = scrapy.Field()
+    director = scrapy.Field()
+    classification = scrapy.Field()
+    actor = scrapy.Field()
