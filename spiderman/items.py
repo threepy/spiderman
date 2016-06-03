@@ -26,9 +26,11 @@ class XinItem(scrapy.Item):
     
     
 class DoubanMovieItem(scrapy.Item):
+    id = scrapy.Field()
     name = scrapy.Field()
     year = scrapy.Field()
     score = scrapy.Field()
     director = scrapy.Field()
     classification = scrapy.Field()
     actor = scrapy.Field()
+    introd = scrapy.Field()

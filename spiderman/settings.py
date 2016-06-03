@@ -62,10 +62,10 @@ CONCURRENT_REQUESTS=100
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'spiderman.pipelines.SpidermanPipeline': 1,
-   'spiderman.pipelines.XinSpiderPipeline': 2,
-   'scrapy.pipelines.images.ImagesPipeline': 3,
-   'spiderman.pipelines.DoubanMoviePipeline': 4,
+#    'spiderman.pipelines.SpidermanPipeline': 1,
+#    'spiderman.pipelines.XinSpiderPipeline': 2,
+#    'scrapy.pipelines.images.ImagesPipeline': 3,
+   'spiderman.pipelines.DoubanMoviePipeline': 300,
 }
 
 IMAGES_STORE = 'd:\images'
@@ -100,3 +100,8 @@ DB_CONNECT = {
    'charset': 'utf8',
    'use_unicode': True
 }
+
+DOWNLOAD_DELAY = 2
+RANDOMIZE_DOWNLOAD_DELAY = True
+USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.54 Safari/536.5'
+COOKIES_ENABLED = False

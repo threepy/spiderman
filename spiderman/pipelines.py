@@ -18,7 +18,10 @@ class SpidermanPipeline(object):
         self.dbpool = dbpool
 
     def __del__(self):
-        self.dbpool.close()
+        try:
+            self.dbpool.close()
+        except Exception:
+            pass
 
     def open_spider(self, spider):
         if spider.name == 'dmoz':
@@ -59,8 +62,8 @@ class DoubanMoviePipeline(SpidermanPipeline):
             
     def process_item(self, item, spider):
         if spider.name == 'doubanmovie':
-            sql = 'insert into doubanmovie VALUES (%s, %s, %s, %s, %s, %s)'
-            param = (item['name'][0], item['year'][0], item['score'][0], item['director'][0],item['classification'][0], item['actor'][0])
+            sql = 'insert into doubanmovie (id, name, year, score, director, classification, actor, introd) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)'
+            param = (int(item['id'][0].split(".")[1]), item['name'][0], item['year'][0], item['score'][0], item['director'][0],item['classification'][0], ' '.join(item['actor']), item['introd'][0])
             self.dbpool.runOperation(sql, param)
             return item
         else:
